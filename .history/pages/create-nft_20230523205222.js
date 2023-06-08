@@ -8,7 +8,7 @@ import axios from "axios";
 const pinataBaseURL = "https://api.pinata.cloud/pinning";
 const pinataAPIKey = "317355d8f053962a3cc3";
 const pinataAPISecret =
-  "0b6653311344a6c5b185205280580798f2cc1c66f6ce123c42b020826eb947e4";
+  "21b1c6d87908e4688aa688a7884191187883c4f12b6a98f1dbdd48362be678da";
 
 import { marketplaceAddress } from "../config";
 import NFTMarketplace from "../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";

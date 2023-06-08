@@ -1,6 +1,7 @@
 /* pages/create-nft.js */
 import { useState } from "react";
 import { ethers } from "ethers";
+// import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from "next/router";
 import Web3Modal from "web3modal";
 import axios from "axios";
@@ -11,6 +12,7 @@ const pinataAPISecret =
   "0b6653311344a6c5b185205280580798f2cc1c66f6ce123c42b020826eb947e4";
 
 import { marketplaceAddress } from "../config";
+
 import NFTMarketplace from "../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 
 export default function CreateItem() {
@@ -20,25 +22,24 @@ export default function CreateItem() {
     name: "",
     description: "",
   });
+
   const router = useRouter();
 
   async function onChange(e) {
     /* upload image to IPFS */
     const file = e.target.files[0];
     try {
+      console.log(file);
       const data = new FormData();
       data.append("file", file);
-
       const res = await axios.post(`${pinataBaseURL}/pinFileToIPFS`, data, {
-        maxBodyLength: "Infinity",
+        maxContentLength: "Infinity",
         headers: {
           "Content-Type": `multipart/form-data; boundary=${data._boundary}`,
           pinata_api_key: pinataAPIKey,
           pinata_secret_api_key: pinataAPISecret,
         },
       });
-      console.log(res.data);
-
       const url = `https://gateway.pinata.cloud/ipfs/${res.data.IpfsHash}`;
       console.log("File uploaded to Pinata:", url);
       setFileUrl(url);
@@ -71,7 +72,7 @@ export default function CreateItem() {
       /* after metadata is uploaded to IPFS, return the URL to use it in the transaction */
       return url;
     } catch (error) {
-      console.log("Error uploading file: ", error);
+      console.log("Error uploading metadata: ", error);
     }
   }
 
